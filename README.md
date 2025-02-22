@@ -1,2 +1,3 @@
 # Expense-Tracker-CLI
-An expense tracker using C++
+A simple expense tracker using C++
+[Road map](https://roadmap.sh/projects/expense-tracker)
