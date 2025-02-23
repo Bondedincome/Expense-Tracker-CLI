@@ -111,7 +111,7 @@ void summary()
     {
         total += exp.amount;
     }
-    cout << "Total expenses: $" << total << endl;
+    cout << "Total expenses: " << total << " ETB" << endl;
 }
 
 // Summary by month
@@ -127,7 +127,7 @@ void summaryByMonth(int month)
             total += exp.amount;
         }
     }
-    cout << "Total expenses for month " << month << ": $" << total << endl;
+    cout << "Total expenses for month " << month << ": " << total << " ETB" << endl;
 }
 
 void printBanner()
@@ -143,12 +143,13 @@ void printBanner()
     )" << endl;
 }
 
-void clearScreen() {
-    #ifdef _WIN32
-        system("cls");
-    #else
-        system("clear");
-    #endif
+void clearScreen()
+{
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
 }
 
 // Main function to handle CLI commands
@@ -178,7 +179,7 @@ int main()
                  << "  delete <id>                 - Delete an expense by ID\n"
                  << "  summary                     - Show total expenses\n"
                  << "  summary <month>             - Show expenses for a specific month\n"
-                 << "  clear                       - clears the screen."
+                 << "  clear                       - clears the screen\n"
                  << "  exit                        - Quit the program\n";
         }
         else if (input.rfind("add ", 0) == 0)
@@ -226,4 +227,3 @@ int main()
 
     return 0;
 }
-
