@@ -105,7 +105,7 @@ expense-tracker summary 2
 Total expenses for month 2: 2000 ETB
 ```
 
-## Future Improvements
+## Wish list
 
 - Support for exporting expenses to CSV.
 - Ability to categorize expenses.
@@ -119,4 +119,4 @@ Pull requests are welcome! For major changes, please open an issue first to disc
 
 ### Author
 
-Daniot Mihrete - GitHub Profile
+Daniot Mihrete - [GitHub Profile](https://github.com/Bondedincome)
