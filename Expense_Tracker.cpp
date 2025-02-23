@@ -130,76 +130,100 @@ void summaryByMonth(int month)
     cout << "Total expenses for month " << month << ": $" << total << endl;
 }
 
-// Main function to handle CLI commands
-int main(int argc, char *argv[])
+void printBanner()
 {
-    if (argc < 2)
-    {
-        cout << "Usage: expense-tracker <command> [options]" << endl;
-        return 1;
-    }
+    cout << "Welcome to Expense Tracker CLI!" << endl;
+    cout << "Type 'help' for a list of commands or 'exit' to quit." << endl;
+    cout << R"(
+     ___                              _____            _           
+    | __|_ ___ __  ___ _ _  ___ ___  |_   _| _ __ _ __| |_____ _ _ 
+    | _|\ \ / '_ \/ -_) ' \(_-</ -_)   | || '_/ _` / _| / / -_) '_|
+    |___/_\_\ .__/\___|_||_/__/\___|   |_||_| \__,_\__|_\_\___|_|  
+            |_|                                                    
+    )" << endl;
+}
 
-    string command = argv[1];
+void clearScreen() {
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
+}
 
-    if (command == "help")
+// Main function to handle CLI commands
+int main()
+{
+    printBanner();
+    string input;
+    while (true)
     {
-        cout << "expense-tracker - Command-line expense tracking tool" << endl;
-        cout << endl;
-        cout << "Usage: expense-tracker <command> [options]" << endl;
-        cout << endl;
-        cout << "Commands:" << endl;
-        cout << "  help               Display this help message" << endl;
-        cout << "  add --description <text> --amount <value>  Add a new expense" << endl;
-        cout << "  list              List all expenses" << endl;
-        cout << "  delete --id <number>  Delete an expense by ID" << endl;
-        cout << "  summary           Display a summary of all expenses" << endl;
-        cout << "  summary --month <number>  Display a summary of expenses for a specific month" << endl;
-        cout << "\n"
-             << endl;
-        return 0;
-    }
+        cout << "\nexpense-tracker "; // CLI prompt
+        getline(cin, input);
 
-    else if (command == "add")
-    {
-        if (argc < 5 || string(argv[2]) != "--description" || string(argv[4]) != "--amount")
+        // Trim spaces (optional)
+        input.erase(0, input.find_first_not_of(" "));
+        input.erase(input.find_last_not_of(" ") + 1);
+
+        if (input == "exit")
         {
-            cout << "Usage: expense-tracker add --description <text> --amount <value>" << endl;
-            return 1;
+            cout << "Goodbye!" << endl;
+            break;
         }
-        string description = argv[3];
-        double amount = stod(argv[5]);
-        addExpense(description, amount);
-    }
-    else if (command == "list")
-    {
-        listExpenses();
-    }
-    else if (command == "delete")
-    {
-        if (argc < 4 || string(argv[2]) != "--id")
+        else if (input == "help")
         {
-            cout << "Usage: expense-tracker delete --id <number>" << endl;
-            return 1;
+            cout << "\nCommands:\n"
+                 << "  add <description> <amount>   - Add a new expense\n"
+                 << "  list                        - List all expenses\n"
+                 << "  delete <id>                 - Delete an expense by ID\n"
+                 << "  summary                     - Show total expenses\n"
+                 << "  summary <month>             - Show expenses for a specific month\n"
+                 << "  clear                       - clears the screen."
+                 << "  exit                        - Quit the program\n";
         }
-        int id = stoi(argv[3]);
-        deleteExpense(id);
-    }
-    else if (command == "summary")
-    {
-        if (argc == 4 && string(argv[2]) == "--month")
+        else if (input.rfind("add ", 0) == 0)
         {
-            int month = stoi(argv[3]);
-            summaryByMonth(month);
+            stringstream ss(input.substr(4)); // Remove "add "
+            string description;
+            double amount;
+            if (ss >> quoted(description) >> amount)
+            {
+                addExpense(description, amount);
+            }
+            else
+            {
+                cout << "Usage: add \"description\" amount" << endl;
+            }
         }
-        else
+        else if (input == "list")
+        {
+            listExpenses();
+        }
+        else if (input.rfind("delete ", 0) == 0)
+        {
+            int id = stoi(input.substr(7));
+            deleteExpense(id);
+        }
+        else if (input == "summary")
         {
             summary();
         }
-    }
-    else
-    {
-        cout << "Invalid command!" << endl;
+        else if (input.rfind("summary ", 0) == 0)
+        {
+            int month = stoi(input.substr(8));
+            summaryByMonth(month);
+        }
+        else if (input == "clear")
+        {
+            clearScreen();
+            printBanner();
+        }
+        else
+        {
+            cout << "Invalid command! Type 'help' for a list of commands." << endl;
+        }
     }
 
     return 0;
 }
+
